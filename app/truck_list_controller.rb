@@ -1,4 +1,4 @@
-class BeerListController < UITableViewController
+class TruckListController < UITableViewController
   def init
     if super
       self.tabBarItem = UITabBarItem.alloc.initWithTitle('List', image:UIImage.imageNamed('list.png'), tag:1)
@@ -12,10 +12,10 @@ class BeerListController < UITableViewController
 
   def viewWillAppear(animated)
     navigationController.setNavigationBarHidden(true, animated:true)
-  end    
+  end
 
   def tableView(tableView, numberOfRowsInSection:section)
-    Beer::All.size
+    Truck::All.size
   end
 
   CELLID = 'CellIdentifier'
@@ -26,15 +26,15 @@ class BeerListController < UITableViewController
       cell
     end
 
-    beer = Beer::All[indexPath.row]
-    cell.textLabel.text = beer.title
+    truck = Truck::All[indexPath.row]
+    cell.textLabel.text = truck.title
     cell
   end
 
   def tableView(tableView, accessoryButtonTappedForRowWithIndexPath:indexPath)
-    beer = Beer::All[indexPath.row]
-    controller = UIApplication.sharedApplication.delegate.beer_details_controller
+    truck = Truck::All[indexPath.row]
+    controller = UIApplication.sharedApplication.delegate.truck_details_controller
     navigationController.pushViewController(controller, animated:true)
-    controller.showDetailsForBeer(beer)
+    controller.showDetailsForTruck(truck)
   end
 end

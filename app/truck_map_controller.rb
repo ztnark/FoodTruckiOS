@@ -1,4 +1,4 @@
-class BeerMapController < UIViewController
+class TruckMapController < UIViewController
   def init
     if super
       self.tabBarItem = UITabBarItem.alloc.initWithTitle('Map', image:UIImage.imageNamed('map.png'), tag:1)
@@ -21,18 +21,10 @@ class BeerMapController < UIViewController
     BubbleWrap::HTTP.get("http://localhost:3000/all") do |response|
       json_trucks = BW::JSON.parse(response.body)
       json_trucks.each do |truck|
-        @adelita = Beer.new(truck[:latitude],truck[:longitude], truck[:name], 'http://www.yelp.com/biz/la-adelita-truck-chicago')
-        @adelita
-        Beer::All.push(@adelita)
-        Beer::All.each { |beer| self.view.addAnnotation(beer) }
+        Truck::All.push(Truck.new(truck[:latitude],truck[:longitude], truck[:name], 'http://www.yelp.com/biz/la-adelita-truck-chicago'))
+        Truck::All.each { |truck| self.view.addAnnotation(truck) }
       end
     end
-
-
-
-
-
-
   end
 
   def viewWillAppear(animated)
@@ -40,11 +32,11 @@ class BeerMapController < UIViewController
   end
 
   ViewIdentifier = 'ViewIdentifier'
-  def mapView(mapView, viewForAnnotation:beer)
+  def mapView(mapView, viewForAnnotation:truck)
     if view = mapView.dequeueReusableAnnotationViewWithIdentifier(ViewIdentifier)
-      view.annotation = beer
+      view.annotation = truck
     else
-      view = MKPinAnnotationView.alloc.initWithAnnotation(beer, reuseIdentifier:ViewIdentifier)
+      view = MKPinAnnotationView.alloc.initWithAnnotation(truck, reuseIdentifier:ViewIdentifier)
       view.canShowCallout = true
       view.image = UIImage.imageNamed('truck.png')
       # view.animatesDrop = true
@@ -57,10 +49,10 @@ class BeerMapController < UIViewController
 
   def showDetails(sender)
     if view.selectedAnnotations.size == 1
-      beer = view.selectedAnnotations[0]
-      controller = UIApplication.sharedApplication.delegate.beer_details_controller
+      truck = view.selectedAnnotations[0]
+      controller = UIApplication.sharedApplication.delegate.truck_details_controller
       navigationController.pushViewController(controller, animated:true)
-      controller.showDetailsForBeer(beer)
+      controller.showDetailsForTruck(truck)
     end
   end
 end

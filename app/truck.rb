@@ -1,4 +1,4 @@
-class Beer
+class Truck
   def initialize(lat, long, name, link)
     @name = name
     @coordinate = CLLocationCoordinate2D.new
