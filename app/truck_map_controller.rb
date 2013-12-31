@@ -18,7 +18,7 @@ class TruckMapController < UIViewController
     region = MKCoordinateRegionMake(CLLocationCoordinate2D.new(41.897640, -87.643304), MKCoordinateSpanMake(0.03, 0.03))
     self.view.setRegion(region)
 
-    BubbleWrap::HTTP.get("http://localhost:3000/all") do |response|
+    BubbleWrap::HTTP.get("http://peaceful-waters-6955.herokuapp.com/all") do |response|
       json_trucks = BW::JSON.parse(response.body)
       json_trucks.each do |truck|
         Truck::All.push(Truck.new(truck[:latitude],truck[:longitude], truck[:name], 'http://www.yelp.com/biz/la-adelita-truck-chicago'))
